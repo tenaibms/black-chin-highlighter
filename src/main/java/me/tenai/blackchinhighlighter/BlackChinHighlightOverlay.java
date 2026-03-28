@@ -15,7 +15,7 @@ import java.awt.*;
  * Credits:
  *
  * https://github.com/MoreBuchus/buchus-plugins/blob/tzhaar-hp-tracker/src/main/java/com/tzhaarhptracker/TzhaarHPTrackerOverlay.java
- *  For the highlighting code
+ * For the highlighting code
  *
  */
 
@@ -62,12 +62,21 @@ public class BlackChinHighlightOverlay extends Overlay {
 
         for(var npc : plugin.getNpcs()) {
             if(npc.isDead()) continue;
+            if(!config.highlightFourthChinchompa() && npc.getIndex() == plugin.getFourthSpawnIndex()) continue;
+
+            Color outlineColor = config.highlightOutlineColor();
+            Color fillColor = config.highlightFillColor();
+
+            if(plugin.getDyingNpcs().containsKey(npc) && config.recolorDeadChinchompas()) {
+                outlineColor = config.highlightOutlineColorDead();
+                fillColor = config.highlightFillColorDead();
+            }
             NPCComposition npcComposition = npc.getTransformedComposition();
             if (npcComposition != null) {
                 if(config.highlightStyle().contains(BlackChinHighlighterConfig.HighlightStyle.HULL)) {
                     Shape hull = npc.getConvexHull();
                     if (hull != null) {
-                        renderPoly(graphics, config.highlightOutlineColor(), config.highlightFillColor(), hull, config.highlightOutlineWidth());
+                        renderPoly(graphics, outlineColor, fillColor, hull, config.highlightOutlineWidth());
                     }
                 }
 
@@ -77,7 +86,7 @@ public class BlackChinHighlightOverlay extends Overlay {
                     if (lp != null) {
                         Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, 1);
                         if(tilePoly != null) {
-                            renderPoly(graphics, config.highlightOutlineColor(), config.highlightFillColor(), tilePoly, config.highlightOutlineWidth());
+                            renderPoly(graphics, outlineColor, fillColor, tilePoly, config.highlightOutlineWidth());
                         }
                     }
                 }
@@ -89,13 +98,13 @@ public class BlackChinHighlightOverlay extends Overlay {
                         lp = new LocalPoint(lp.getX() + 128 / 2 - 64, lp.getY() + 128 / 2 - 64, wv);
                         Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, 1);
                         if(tilePoly != null) {
-                            renderPoly(graphics, config.highlightOutlineColor(), config.highlightFillColor(), tilePoly, config.highlightOutlineWidth());
+                            renderPoly(graphics, outlineColor, fillColor, tilePoly, config.highlightOutlineWidth());
                         }
                     }
                 }
 
                 if(config.highlightStyle().contains(BlackChinHighlighterConfig.HighlightStyle.OUTLINE)) {
-                    modelOutlineRenderer.drawOutline(npc, (int) config.highlightOutlineWidth(), config.highlightOutlineColor(), 4);
+                    modelOutlineRenderer.drawOutline(npc, (int) config.highlightOutlineWidth(), outlineColor, 4);
                 }
             }
         }

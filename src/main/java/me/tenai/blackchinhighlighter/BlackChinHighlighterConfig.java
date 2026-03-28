@@ -55,8 +55,32 @@ public interface BlackChinHighlighterConfig extends Config
         return new Color(255, 255, 255, 64);
     }
 
+    @Alpha
     @ConfigItem(
             position = 4,
+            keyName = "outlineColorDead",
+            name = "Fill Color",
+            description = "Outline color for the dying chinchompas"
+    )
+    default Color highlightOutlineColorDead()
+    {
+        return new Color(255, 0, 0, 255);
+    }
+
+    @Alpha
+    @ConfigItem(
+            position = 5,
+            keyName = "fillColorDead",
+            name = "Fill Color",
+            description = "Fill color for the dying chinchompas"
+    )
+    default Color highlightFillColorDead()
+    {
+        return new Color(255, 0, 0, 64);
+    }
+
+    @ConfigItem(
+            position = 6,
             keyName = "outlineWidth",
             name = "Outline Width",
             description = "Outline width for the highlighted chinchompas"
@@ -64,6 +88,22 @@ public interface BlackChinHighlighterConfig extends Config
     default double highlightOutlineWidth() {
         return 2.0;
     }
+
+    @ConfigItem(
+            position = 7,
+            keyName = "recolorDeadChins",
+            name = "Recolor Dying Chinchompas",
+            description = "Changes the color for Chinchompas that will die soon (after being shot). May be somewhat buggy but errors should correct themselves."
+    )
+    default boolean recolorDeadChinchompas() { return true; }
+
+    @ConfigItem(
+            position = 8,
+            keyName = "highlightFourthChinchompa",
+            name = "Highlight North West Spawn",
+            description = "Highlights the North West Chinchompa, this is the only one that isn't insta-lured, so it's optional to kill and it's usually better to prioritize the other three Chinchompas."
+    )
+    default boolean highlightFourthChinchompa() { return false; }
 
     @Getter
     @RequiredArgsConstructor
